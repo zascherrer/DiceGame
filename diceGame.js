@@ -54,6 +54,13 @@ function howToPlay(characterArray){
 	alert("Light attacks are easy to hit, but don't do a lot of damage. Heavy attacks do a lot of damage, but are harder to hit.")
 	alert("That's probably a lot of information to read at once, so we'll try it out in practice.")
 
+	enemy = generateCharacter();	//Generating an enemy
+	enemy /= 2;						//Making the first enemy the player fights easier to deal with
+	enemy = Math.floor(enemy);		//Rounding the stats down to an even number
+
+	alert("Now you'll fight your first enemy. Ready, set, go!");
+	fight(characterArray, enemy);
+
 }
 
 function rollDie(sides){
@@ -68,6 +75,9 @@ function generateSecondaryStatistics(characterArray){
 	let dodge = (characterArray[2] + characterArray[3]) / 4; //(Health + Speed) / 4
 	dodge = Math.floor(dodge);
 	characterArray.push(dodge);
+
+	let isAlive = true;
+	characterArray.push(isAlive);
 
 	return characterArray;
 }
@@ -93,10 +103,31 @@ function generateCharacter(){
 	characterStatistics = generateSecondaryStatistics(characterStatistics);
 	//characterStatistics[4] === hit points
 	//characterStatistics[5] === dodge
+	//characterStatistics[6] === isAlive
 
 	return characterStatistics;
 }
 
+function fight(player, enemy){
+	let playerTurn;
+
+	if(player[3] >= enemy[3]){ 		//Comparing the characters' speeds
+		playerTurn = true;
+	}
+	else{
+		playerTurn = false;
+	}
+
+	while(player[6] && enemy[6]){	//i.e. while both the player and the enemy are still alive
+		if(playerTurn){
+			playerAttack(player, enemy);
+		}
+		else{
+			enemyAttack(player, enemy);
+		}
+	}
+
+}
 
 
 
