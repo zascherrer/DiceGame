@@ -27,22 +27,15 @@ function characterCreation(){
 	alert("Your character's stats are randomly generated, but you can reroll them however many times you choose.");
 
 	while(reroll == "y"){
-		strength = rollDie(6) + rollDie(6) + rollDie(6);
-		dexterity = rollDie(6) + rollDie(6) + rollDie(6);
-		health = rollDie(6) + rollDie(6) + rollDie(6);
-		speed = rollDie(6) + rollDie(6) + rollDie(6);
+		characterStatistics = generateCharacter();
+
+		strength = characterStatistics[0];
+		dexterity = characterStatistics[1];
+		health = characterStatistics[2];
+		speed = characterStatistics[3];
 
 		reroll = prompt("Your character's stats are: \n\nStrength: " + strength + "\nDexterity: " + dexterity + "\nHealth: " + health + "\nSpeed: " + speed + "\n\nReroll stats? (type 'y' if yes)")
 	}
-	
-	characterStatistics.push(strength);
-	characterStatistics.push(dexterity);
-	characterStatistics.push(health);
-	characterStatistics.push(speed);
-
-	characterStatistics = generateSecondaryStatistics(characterStatistics);
-	//characterStatistics[4] === hit points
-	//characterStatistics[5] === dodge
 
 	return(characterStatistics);
 
@@ -68,7 +61,7 @@ function rollDie(sides){
 }
 
 function generateSecondaryStatistics(characterArray){
-	let hitPoints = (characterArray[0] + characterArray[2]) / 2; //(Strength + Health) / 2
+	let hitPoints = (characterArray[0] + characterArray[2] + rollDie(20)); //(Strength + Health + 20-sided die)
 	hitPoints = Math.floor(hitPoints);
 	characterArray.push(hitPoints);
 
@@ -79,7 +72,30 @@ function generateSecondaryStatistics(characterArray){
 	return characterArray;
 }
 
+function generateCharacter(){
+	let characterStatistics = [];
+	let strength;
+	let dexterity;
+	let health;
+	let speed;
 
+	strength = rollDie(6) + rollDie(6) + rollDie(6);
+	dexterity = rollDie(6) + rollDie(6) + rollDie(6);
+	health = rollDie(6) + rollDie(6) + rollDie(6);
+	speed = rollDie(6) + rollDie(6) + rollDie(6);
+
+
+	characterStatistics.push(strength);
+	characterStatistics.push(dexterity);
+	characterStatistics.push(health);
+	characterStatistics.push(speed);
+
+	characterStatistics = generateSecondaryStatistics(characterStatistics);
+	//characterStatistics[4] === hit points
+	//characterStatistics[5] === dodge
+
+	return characterStatistics;
+}
 
 
 
