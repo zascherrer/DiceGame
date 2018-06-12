@@ -78,6 +78,7 @@ function howToPlay(characterArray){
 function kumite(player){
 	let isVictory = true;
 	let victoryCounter = 0;
+	let enemyDifficulty = 0.5;
 
 	alert("You will face 10 enemies, each one stronger than the last. Ready, set, go!");
 	do{
@@ -85,6 +86,8 @@ function kumite(player){
 		//enemy /= 2;						//Making the first enemy the player fights easier to deal with
 		//enemy = Math.floor(enemy);		//Rounding the stats down to an even number
 		enemy.push("Enemy " + (victoryCounter + 1).toString());
+		enemy = modifyEnemy(enemy, enemyDifficulty);
+		enemyDifficulty += 0.1;
 
 		alert(enemy[7] + " approaches...");
 
@@ -104,7 +107,7 @@ function kumite(player){
 		alert("You win!!!");
 	}
 
-	alert("Your score was: " victoryCounter);
+	alert("Your score was: " + victoryCounter);
 }
 
 function rollDie(sides){
@@ -194,7 +197,7 @@ function playerAttack(player, enemy){
 	}
 
 	if(shouldAttackHit && !isDefenseSuccessful){
-		enemy = applyDamage(player, enemy);
+		enemy = applyDamage(player, enemy, typeOfAttack, attackLocation);
 	}
 
 	return enemy;
@@ -211,7 +214,7 @@ function enemyAttack(player, enemy){
 	}
 
 	if(shouldAttackHit && !isDefenseSuccessful){
-		player = applyDamage(enemy, player);
+		player = applyDamage(enemy, player, typeOfAttack, attackLocation);
 	}
 
 	return player;
@@ -262,7 +265,7 @@ function attackType(){
 function hitOrMiss(hitLocation, attackType, character){
 	let penaltyToHitTorso = 0;
 	let penaltyToHitArm = -2;
-	let penaltyToHitLeg = -3;
+	let penaltyToHitLeg = -4;
 	let penaltyToHitHead = -7;
 
 	let skillToHit = character[1]; //The character's dexterity -- penalties will be applied later
@@ -372,7 +375,7 @@ function applyDamage(attacker, defender, attackType, hitLocation){
 		case "3":
 			abilityDamage = damageDone / abilityDamageDivisor;
 			abilityDamage = Math.floor(abilityDamage);
-			defender[3] -= abilityDamage;				//Ability damage is applied to speed
+			defender[5] -= abilityDamage;				//Ability damage is applied to dodge
 			break;
 		case "4":
 			damageDone *= 4;
@@ -415,6 +418,7 @@ function survivalCheck(character){
 function modifyEnemy(enemy, multiplier){
 	for(let i = 0; i < 6; i++){
 		enemy[i] *= multiplier;
+		enemy[i] = Math.round(enemy[i]);
 	}
 
 	return enemy;
