@@ -146,7 +146,21 @@ function playerAttack(player, enemy){
 	if(shouldAttackHit && !isDefenseSuccessful){
 		enemy = applyDamage(player, enemy);
 	}
+}
 
+function enemyAttack(player, enemy){
+	let attackLocation = randomHitLocation();
+	let typeOfAttack = rollDie(2).toString();
+	let shouldAttackHit = hitOrMiss(attackLocation, typeOfAttack, player);
+	let isDefenseSuccessful;
+
+	if(shouldAttackHit){
+		isDefenseSuccessful = rollDodge(typeOfAttack, player);
+	}
+
+	if(shouldAttackHit && !isDefenseSuccessful){
+		enemy = applyDamage(enemy, player);
+	}
 }
 
 function hitLocation(){
@@ -269,7 +283,7 @@ function rollDodge(attackType, character){
 	skillToHit += penaltyToDodge;
 
 	if(rollThreeSixSidedDice() <= skillToHit){
-		alert("The attack was dodged!")
+		alert(character[7] + " dodged!")
 		return true;
 	}
 	else{
