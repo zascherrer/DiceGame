@@ -48,7 +48,7 @@ function howToPlay(characterArray){
 	//Use alert() for the instructions
 	let answer = prompt("Would you like to skip the tutorial? (y/n)")
 	if(answer == "y"){
-		return
+		return;
 	}
 
 	alert("To attack, you first decide where you want to attack someone: the torso, the arm, the leg or the head. Don't worry about remembering those individually, they'll pop up every time you need to choose. The torso is very easy to hit, but is very resilient against attacks. The arms and legs are harder to hit, but can hinder your enemy if you hit them enough. The head is extremely difficult to hit, but the enemy takes massive damage from a head shot!")
@@ -56,14 +56,22 @@ function howToPlay(characterArray){
 	alert("Light attacks are easy to hit, but don't do a lot of damage. Heavy attacks do a lot of damage, but are harder to hit.")
 	alert("That's probably a lot of information to read at once, so we'll try it out in practice.")
 
-	enemy = generateCharacter();	//Generating an enemy
+	enemy = generateCharacter();		//Generating an enemy
 	//enemy /= 2;						//Making the first enemy the player fights easier to deal with
 	//enemy = Math.floor(enemy);		//Rounding the stats down to an even number
 	enemy.push("Training_Bot");
 
 	alert("Now you'll fight your first enemy. Ready, set, go!");
-	fight(characterArray, enemy);
+	let isVictory = fight(characterArray, enemy);
 
+	if(isVictory){
+		alert("Congratulations! You won your first fight! Now to move on to the real game...");
+	}
+	else{
+		alert("You might have lost the battle, but you haven't lost the war! Now to move on to the real game...");
+	}
+
+	return;
 }
 
 function rollDie(sides){
@@ -134,6 +142,12 @@ function fight(player, enemy){
 		playerTurn = !playerTurn;
 	}
 
+	if(player[6] === true){
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 
 function playerAttack(player, enemy){
@@ -299,9 +313,42 @@ function rollDodge(attackType, character){
 	}
 }
 
-function applyDamage(attacker, defender){
+function applyDamage(attacker, defender, attackType, hitLocation){
 	let damageModifier = attacker[0] - 10;		//Strength - 10
 	let damageDone = rollDie(8) + damageModifier;
+	let abilityDamage;
+	let abilityDamageDivisor = 3;
+
+	if(attackType == "1"){
+		damageDone -= 2;
+	}
+	else{
+		damageDone += 2;
+	}
+
+	switch(hitLocation){
+		case "1":
+			damageDone /= 2;
+			damageDone = Math.floor(damageDone);
+			break;
+		case "2":
+			abilityDamage = damageDone / abilityDamageDivisor;
+			abilityDamage = Math.floor(abilityDamage);
+			defender[1] -= abilityDamage;				//Ability damage is applied to dexterity
+			break;
+		case "3":
+			abilityDamage = damageDone / abilityDamageDivisor;
+			abilityDamage = Math.floor(abilityDamage);
+			defender[3] -= abilityDamage;				//Ability damage is applied to speed
+			break;
+		case "4":
+			damageDone *= 4;
+			break;
+		default:
+			damageDone /= 2;
+			damageDone = Math.floor(damageDone);
+			break;
+	}
 
 	if(damageDone > 0){
 		defender[4] -= damageDone;				//Subtracting the damage from the defender's HP
