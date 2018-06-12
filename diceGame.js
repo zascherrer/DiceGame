@@ -77,14 +77,14 @@ function howToPlay(characterArray){
 function arcadeMode(player){
 	let isVictory = true;
 	let victoryCounter = 0;
-	let enemyDifficulty = 0.5;
+	let enemyDifficulty = 0.75;
 
 	alert("You will face 10 enemies, each one stronger than the last. Ready, set, go!");
 	do{
 		enemy = generateCharacter();		//Generating an enemy
 		enemy.push("Enemy " + (victoryCounter + 1).toString());
 		enemy = modifyEnemy(enemy, enemyDifficulty);
-		enemyDifficulty += 0.1;
+		enemyDifficulty += 0.05;
 
 		alert(enemy[7] + " approaches...");
 
@@ -339,10 +339,10 @@ function attackType(){
 }
 
 function hitOrMiss(hitLocation, attackType, character){
-	let penaltyToHitTorso = 0;
-	let penaltyToHitArm = -2;
-	let penaltyToHitLeg = -4;
-	let penaltyToHitHead = -7;
+	let penaltyToHitTorso = 2;
+	let penaltyToHitArm = -0;
+	let penaltyToHitLeg = -2;
+	let penaltyToHitHead = -5;
 
 	let skillToHit = character[1]; //The character's dexterity -- penalties will be applied later
 
@@ -410,6 +410,7 @@ function applyDamage(attacker, defender, attackType, hitLocation){
 	let damageDone = rollDie(8) + damageModifier;
 	let abilityDamage;
 	let abilityDamageDivisor = 3;
+	let hitLocationName = getHitLocationName(hitLocation);
 
 	if(attackType == "1"){
 		damageDone -= 2;
@@ -444,7 +445,7 @@ function applyDamage(attacker, defender, attackType, hitLocation){
 
 	if(damageDone > 0){
 		defender[4] -= damageDone;				//Subtracting the damage from the defender's HP
-		alert(attacker[7] + " did " + damageDone + " damage!");
+		alert(attacker[7] + " did " + damageDone + " damage to " + defender[7] + "'s " + hitLocationName + "!");
 	}
 	else{
 		alert(attacker[7] + " didn't hit hard enough to do damage...");
@@ -480,34 +481,45 @@ function modifyEnemy(enemy, multiplier){
 	return enemy;
 }
 
-
-
-
-
-
-
-
-
-
-function checkValidityOfSides(sides){
-	if(isNaN(sides)){
-		alert("Please enter a number.");
-		return false;
-	}
-	switch(true){
-		case sides === "4":
-			return true;
-		case sides === "6":
-			return true;
-		case sides === "8":
-			return true;
-		case sides === "10":
-			return true;
-		case sides === "12":
-			return true;
-		case sides === "20":
-			return true;
+function getHitLocationName(hitLocation){
+	switch(hitLocation){
+		case "1":
+			return "torso";
+		case "2":
+			return "arm";
+		case "3":
+			return "leg";
+		case "4":
+			return "head";
 		default:
-			return false;
+			return "torso";
 	}
 }
+
+
+
+
+
+
+// function checkValidityOfSides(sides){
+// 	if(isNaN(sides)){
+// 		alert("Please enter a number.");
+// 		return false;
+// 	}
+// 	switch(true){
+// 		case sides === "4":
+// 			return true;
+// 		case sides === "6":
+// 			return true;
+// 		case sides === "8":
+// 			return true;
+// 		case sides === "10":
+// 			return true;
+// 		case sides === "12":
+// 			return true;
+// 		case sides === "20":
+// 			return true;
+// 		default:
+// 			return false;
+// 	}
+// }
