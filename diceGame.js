@@ -144,7 +144,7 @@ function playerAttack(player, enemy){
 	}
 
 	if(shouldAttackHit && !isDefenseSuccessful){
-		applyDamage(player, enemy);
+		enemy = applyDamage(player, enemy);
 	}
 
 }
@@ -283,11 +283,20 @@ function applyDamage(attacker, defender){
 	let damageDone = rollDie(8) + damageModifier;
 
 	defender[4] -= damageDone;					//Subtracting the damage from the defender's HP
-	defender[6] = survivalCheck(defender);
+	defender[6] = survivalCheck(defender);		//The isAlive boolean
 }
 
 function survivalCheck(character){
-	
+	let survivalModifierFromHitPoints = character[4] % 10;
+	let survivalModifierFromHealth = character[2] - 10;
+	let survivalModifierTotal = survivalModifierFromHitPoints + survivalModifierFromHealth;
+	let survivalSkill = 10 + survivalModifierTotal;
+
+	if(rollThreeSixSidedDice > survivalSkill){
+		return false;
+	}
+
+	return character;
 }
 
 
