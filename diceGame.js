@@ -76,7 +76,7 @@ function howToPlay(characterArray){
 }
 
 function kumite(player){
-	let isVictory;
+	let isVictory = true;
 	let victoryCounter = 0;
 
 	alert("You will face 10 enemies, each one stronger than the last. Ready, set, go!");
@@ -98,7 +98,13 @@ function kumite(player){
 			alert("Game Over");
 		}
 	}
-	while(isVictory && victoryCounter < 10)
+	while(isVictory && victoryCounter < 10);
+
+	if(isVictory){
+		alert("You win!!!");
+	}
+
+	alert("Your score was: " victoryCounter);
 }
 
 function rollDie(sides){
@@ -405,6 +411,21 @@ function survivalCheck(character){
 
 	return character;
 }
+
+function modifyEnemy(enemy, multiplier){
+	for(let i = 0; i < 6; i++){
+		enemy[i] *= multiplier;
+	}
+
+	return enemy;
+}
+
+
+
+
+
+
+
 
 
 
