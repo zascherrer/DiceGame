@@ -4,7 +4,7 @@ startGame()
 
 function startGame(){
 	let playerName = introduction();
-	let playerCharacter = characterCreation();
+	let playerCharacter = characterCreation(playerName);
 	howToPlay(playerCharacter);
 }
 
@@ -15,7 +15,7 @@ function introduction(){
 	return playerName;
 }
 
-function characterCreation(){
+function characterCreation(playerName){
 	let characterStatistics = [];
 	let strength;
 	let dexterity;
@@ -37,6 +37,8 @@ function characterCreation(){
 		reroll = prompt("Your character's stats are: \n\nStrength: " + strength + "\nDexterity: " + dexterity + "\nHealth: " + health + "\nSpeed: " + speed + "\n\nReroll stats? (type 'y' if yes)")
 	}
 
+	characterStatistics.push(playerName);
+
 	return(characterStatistics);
 
 }
@@ -57,6 +59,7 @@ function howToPlay(characterArray){
 	enemy = generateCharacter();	//Generating an enemy
 	enemy /= 2;						//Making the first enemy the player fights easier to deal with
 	enemy = Math.floor(enemy);		//Rounding the stats down to an even number
+	enemy.push("Training_Bot");
 
 	alert("Now you'll fight your first enemy. Ready, set, go!");
 	fight(characterArray, enemy);
@@ -104,6 +107,7 @@ function generateCharacter(){
 	//characterStatistics[4] === hit points
 	//characterStatistics[5] === dodge
 	//characterStatistics[6] === isAlive
+	//characterStatistics[7] === characterName 		//Will be added later
 
 	return characterStatistics;
 }
@@ -133,6 +137,15 @@ function playerAttack(player, enemy){
 	let attackLocation = hitLocation();
 	let typeOfAttack = attackType();
 	let shouldAttackHit = hitOrMiss(attackLocation, typeOfAttack, player);
+	let isDefenseSuccessful;
+
+	if(shouldAttackHit){
+		isDefenseSuccessful = rollDodge(typeOfAttack, enemy);
+	}
+
+	if(shouldAttackHit && !isDefenseSuccessful){
+		applyDamage(player, enemy);
+	}
 
 }
 
@@ -200,6 +213,7 @@ function hitOrMiss(hitLocation, attackType, character){
 				return true;
 			}
 			else{
+				alert(character[7] + "'s attack missed!")
 				return false;
 			}
 		case "2":
@@ -208,6 +222,7 @@ function hitOrMiss(hitLocation, attackType, character){
 				return true;
 			}
 			else{
+				alert(character[7] + "'s attack missed!")
 				return false;
 			}
 		case "3":
@@ -216,6 +231,7 @@ function hitOrMiss(hitLocation, attackType, character){
 				return true;
 			}
 			else{
+				alert(character[7] + "'s attack missed!")
 				return false;
 			}
 		case "4":
@@ -224,6 +240,7 @@ function hitOrMiss(hitLocation, attackType, character){
 				return true;
 			}
 			else{
+				alert(character[7] + "'s attack missed!")
 				return false;
 			}
 		default:
@@ -232,14 +249,46 @@ function hitOrMiss(hitLocation, attackType, character){
 				return true;
 			}
 			else{
+				alert(character[7] + "'s attack missed!")
 				return false;
 			}
 	}
 }
 
+function rollDodge(attackType, character){
+	let penaltyToDodge = 0;
+	let skillToHit = character[5] 		//The character's dodge stat
 
+	if(attackType == "1"){
+		penaltyToDodge -= 2;
+	}
+	else{
+		penaltyToDodge += 2;
+	}
 
+	skillToHit += penaltyToDodge;
 
+	if(rollThreeSixSidedDice() <= skillToHit){
+		alert("The attack was dodged!")
+		return true;
+	}
+	else{
+		alert("The attack hits!")
+		return false;
+	}
+}
+
+function applyDamage(attacker, defender){
+	let damageModifier = attacker[0] - 10;		//Strength - 10
+	let damageDone = rollDie(8) + damageModifier;
+
+	defender[4] -= damageDone;					//Subtracting the damage from the defender's HP
+	defender[6] = survivalCheck(defender);
+}
+
+function survivalCheck(character){
+	
+}
 
 
 
