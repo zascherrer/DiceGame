@@ -77,14 +77,14 @@ function howToPlay(characterArray){
 function arcadeMode(player){
 	let isVictory = true;
 	let victoryCounter = 0;
-	let enemyDifficulty = 0.75;
+	let enemyDifficulty = 0.8;
 
 	alert("You will face 10 enemies, each one stronger than the last. Ready, set, go!");
 	do{
 		enemy = generateCharacter();		//Generating an enemy
-		enemy.push("Enemy " + (victoryCounter + 1).toString());
+		enemy.push(getEnemyName(victoryCounter + 1));
 		enemy = modifyEnemy(enemy, enemyDifficulty);
-		enemyDifficulty += 0.05;
+		enemyDifficulty += 0.08;
 
 		alert(enemy[7] + " approaches...");
 
@@ -163,7 +163,7 @@ function generateSecondaryStatistics(characterArray){
 	hitPoints = Math.floor(hitPoints);
 	characterArray.push(hitPoints);
 
-	let dodge = (characterArray[2] + characterArray[3]) / 4; //(Health + Speed) / 4
+	let dodge = (characterArray[2] + characterArray[3]) / 3; //(Health + Speed) / 3
 	dodge = Math.floor(dodge);
 	characterArray.push(dodge);
 
@@ -446,11 +446,13 @@ function applyDamage(attacker, defender, attackType, hitLocation){
 	if(damageDone > 0){
 		defender[4] -= damageDone;				//Subtracting the damage from the defender's HP
 		alert(attacker[7] + " did " + damageDone + " damage to " + defender[7] + "'s " + hitLocationName + "!");
+
+		defender = survivalCheck(defender);		//The isAlive boolean
 	}
 	else{
 		alert(attacker[7] + " didn't hit hard enough to do damage...");
 	}								
-	defender = survivalCheck(defender);		//The isAlive boolean
+	
 
 	return defender;
 }
@@ -496,30 +498,30 @@ function getHitLocationName(hitLocation){
 	}
 }
 
+function getEnemyName(enemyNumber){
+	switch(enemyNumber){
+		case 0:
+			return "Training_Bot";
+		case 1:
+			return "Kenny";
+		case 2:
+			return "Dr. Disco";
+		case 3:
+			return "Blackbeard";
+		case 4:
+			return "Thomas Edison";
+		case 5:
+			return "Bigfoot";
+		case 6:
+			return "Ryu";
+		case 7:
+			return "Some guy called 'The Bear'";
+		case 8:
+			return "An actual bear";
+		case 9:
+			return "Thanos";
+		case 10:
+			return "John Kaminski";
+	}
+}
 
-
-
-
-
-// function checkValidityOfSides(sides){
-// 	if(isNaN(sides)){
-// 		alert("Please enter a number.");
-// 		return false;
-// 	}
-// 	switch(true){
-// 		case sides === "4":
-// 			return true;
-// 		case sides === "6":
-// 			return true;
-// 		case sides === "8":
-// 			return true;
-// 		case sides === "10":
-// 			return true;
-// 		case sides === "12":
-// 			return true;
-// 		case sides === "20":
-// 			return true;
-// 		default:
-// 			return false;
-// 	}
-// }
