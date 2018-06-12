@@ -6,7 +6,8 @@ function startGame(){
 	let playerName = introduction();
 	let playerCharacter = characterCreation(playerName);
 	howToPlay(playerCharacter);
-	kumite(playerCharacter);
+	menu(playerCharacter);
+	//arcadeMode(playerCharacter);
 }
 
 function introduction(){
@@ -75,7 +76,7 @@ function howToPlay(characterArray){
 	return;
 }
 
-function kumite(player){
+function arcadeMode(player){
 	let isVictory = true;
 	let victoryCounter = 0;
 	let enemyDifficulty = 0.5;
@@ -108,6 +109,10 @@ function kumite(player){
 	}
 
 	alert("Your score was: " + victoryCounter);
+}
+
+function menu(player){
+	
 }
 
 function rollDie(sides){
@@ -187,7 +192,7 @@ function fight(player, enemy){
 }
 
 function playerAttack(player, enemy){
-	let attackLocation = hitLocation();
+	let attackLocation = hitLocation(player);
 	let typeOfAttack = attackType();
 	let shouldAttackHit = hitOrMiss(attackLocation, typeOfAttack, player);
 	let isDefenseSuccessful;
@@ -220,8 +225,8 @@ function enemyAttack(player, enemy){
 	return player;
 }
 
-function hitLocation(){
-	let choice = prompt("Where would you like to attack? Enter the number of your choice: \n\n 1. Torso \n 2. Arm \n 3. Leg \n 4. Head \n 5. Random")
+function hitLocation(player){
+	let choice = prompt("It's " + player[7] + "'s turn! \n\nWhere would you like to attack? Enter the number of your choice: \n\n 1. Torso \n 2. Arm \n 3. Leg \n 4. Head \n 5. Random")
 
 	if(choice === "5"){
 		choice = randomHitLocation();
