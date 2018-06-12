@@ -112,7 +112,7 @@ function arcadeMode(player){
 }
 
 function menu(player){
-	let choice = prompt("What would you like to play? \n\n 1. Arcade Mode \n\n 2. Fight a Friend");
+	let choice = prompt("What would you like to play? \n\n 1. Arcade Mode \n 2. Fight a Friend");
 
 	switch(choice){
 		case "1":
@@ -128,8 +128,34 @@ function menu(player){
 	}
 }
 
-function fightAFriend(player){
-	
+function fightAFriend(playeOne){
+	let didPlayerOneWin;
+	let rematch;
+
+	let playerTwoName = prompt("Welcome, player 2! What is your name?");
+	alert("Now we'll create " + playerTwoName + "'s character.");
+	let playerTwo = characterCreation();
+
+	alert("What are you waiting for? Fight!");
+	do{
+		didPlayerOneWin = fightPlayerVersusPlayer(playerOne, playerTwo);
+
+		if(didPlayerOneWin){
+			alert(playerOne[7] + " Wins!");
+		}
+		else{
+			alert(playerTwo[7] + " Wins!");
+		}
+
+		let choice = prompt("Rematch? (y/n)");
+		if(choice == "y"){
+			rematch = true;
+		}
+		else{
+			rematch = false;
+		}
+	}
+	while(rematch);
 }
 
 function rollDie(sides){
@@ -198,6 +224,36 @@ function fight(player, enemy){
 			player = enemyAttack(player, enemy);
 		}
 		playerTurn = !playerTurn;
+	}
+
+	if(player[6] === true){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function fightPlayerVersusPlayer(playerOne, playerTwo){
+	let playerOneTurn;
+
+	if(playerOne[3] >= playerTwo[3]){ 		//Comparing the characters' speeds
+		playerOneTurn = true;
+	}
+	else{
+		playerOneTurn = false;
+	}
+
+	while(playerOne[6] && playerTwo[6]){	//i.e. while both the player and the enemy are still alive
+		if(playerOneTurn){
+			alert(playerOne[7] + "'s turn!");
+			playerTwo = playerAttack(playerOne, playerTwo);
+		}
+		else{
+			alert(playerTwo[7] + "'s turn!");
+			playerOne = playerAttack(playerTwo, playerOne);
+		}
+		playerOneTurn = !playerOneTurn;
 	}
 
 	if(player[6] === true){
