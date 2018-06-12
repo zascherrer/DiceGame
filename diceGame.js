@@ -6,6 +6,7 @@ function startGame(){
 	let playerName = introduction();
 	let playerCharacter = characterCreation(playerName);
 	howToPlay(playerCharacter);
+	kumite(playerCharacter);
 }
 
 function introduction(){
@@ -72,6 +73,32 @@ function howToPlay(characterArray){
 	}
 
 	return;
+}
+
+function kumite(player){
+	let isVictory;
+	let victoryCounter = 0;
+
+	alert("You will face 10 enemies, each one stronger than the last. Ready, set, go!");
+	do{
+		enemy = generateCharacter();		//Generating an enemy
+		//enemy /= 2;						//Making the first enemy the player fights easier to deal with
+		//enemy = Math.floor(enemy);		//Rounding the stats down to an even number
+		enemy.push("Enemy " + (victoryCounter + 1).toString());
+
+		alert(enemy[7] + " approaches...");
+
+		isVictory = fight(player, enemy);
+
+		if(isVictory){
+			alert("Victory!");
+			victoryCounter++;
+		}
+		else{
+			alert("Game Over");
+		}
+	}
+	while(isVictory && victoryCounter < 10)
 }
 
 function rollDie(sides){
