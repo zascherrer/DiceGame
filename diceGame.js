@@ -125,11 +125,11 @@ function fight(player, enemy){
 	while(player[6] && enemy[6]){	//i.e. while both the player and the enemy are still alive
 		if(playerTurn){
 			alert("Player turn!");
-			playerAttack(player, enemy);
+			enemy = playerAttack(player, enemy);
 		}
 		else{
 			alert("Enemy turn!");
-			enemyAttack(player, enemy);
+			player = enemyAttack(player, enemy);
 		}
 		playerTurn = !playerTurn;
 	}
@@ -149,6 +149,8 @@ function playerAttack(player, enemy){
 	if(shouldAttackHit && !isDefenseSuccessful){
 		enemy = applyDamage(player, enemy);
 	}
+
+	return enemy;
 }
 
 function enemyAttack(player, enemy){
@@ -162,8 +164,10 @@ function enemyAttack(player, enemy){
 	}
 
 	if(shouldAttackHit && !isDefenseSuccessful){
-		enemy = applyDamage(enemy, player);
+		player = applyDamage(enemy, player);
 	}
+
+	return player;
 }
 
 function hitLocation(){
@@ -299,18 +303,30 @@ function applyDamage(attacker, defender){
 	let damageModifier = attacker[0] - 10;		//Strength - 10
 	let damageDone = rollDie(8) + damageModifier;
 
-	defender[4] -= damageDone;					//Subtracting the damage from the defender's HP
-	defender[6] = survivalCheck(defender);		//The isAlive boolean
+	if(damageDone > 0){
+		defender[4] -= damageDone;				//Subtracting the damage from the defender's HP
+		alert(attacker[7] + " did " + damageDone + " damage!");
+	}
+	else{
+		alert(attacker[7] + " didn't hit hard enough to do damage...");
+	}								
+	defender = survivalCheck(defender);		//The isAlive boolean
+
+	return defender;
 }
 
 function survivalCheck(character){
 	let survivalModifierFromHitPoints = character[4] % 10;
 	let survivalModifierFromHealth = character[2] - 10;
 	let survivalModifierTotal = survivalModifierFromHitPoints + survivalModifierFromHealth;
-	let survivalSkill = 10 + survivalModifierTotal;
+	let survivalSkill = 12 + survivalModifierTotal;
 
-	if(rollThreeSixSidedDice > survivalSkill){
-		return false;
+	if(rollThreeSixSidedDice() > survivalSkill){
+		alert(character[7] + " has been defeated!")
+		character[6] = false;
+	}
+	else{
+		character[6] = true;
 	}
 
 	return character;
