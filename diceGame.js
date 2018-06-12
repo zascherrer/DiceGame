@@ -131,6 +131,9 @@ function fight(player, enemy){
 
 function playerAttack(player, enemy){
 	let attackLocation = hitLocation();
+	let typeOfAttack = attackType();
+	let shouldAttackHit = hitOrMiss(attackLocation, typeOfAttack, player);
+
 }
 
 function hitLocation(){
@@ -169,6 +172,69 @@ function randomHitLocation(){
 		default:
 			return "1";
 		}
+}
+
+function attackType(){
+	return prompt("What type of attack would you like to do? Enter the number of your choice: \n\n 1. Light Attack \n 2. Heavy Attack");
+}
+
+function hitOrMiss(hitLocation, attackType, character){
+	let penaltyToHitTorso = 0;
+	let penaltyToHitArm = -2;
+	let penaltyToHitLeg = -3;
+	let penaltyToHitHead = -7;
+
+	let skillToHit = character[1]; //The character's dexterity -- penalties will be applied later
+
+	if(typeOfAttack == "1"){
+		skillToHit += 2;
+	}
+	else{
+		skillToHit -= 2;
+	}
+
+	switch(hitLocation){
+		case "1":
+			skillToHit += penaltyToHitTorso;
+			if(rollThreeSixSidedDice <= skillToHit){
+				return true;
+			}
+			else{
+				return false;
+			}
+		case "2":
+			skillToHit += penaltyToHitArm;
+			if(rollThreeSixSidedDice <= skillToHit){
+				return true;
+			}
+			else{
+				return false;
+			}
+		case "3":
+			skillToHit += penaltyToHitLeg;
+			if(rollThreeSixSidedDice <= skillToHit){
+				return true;
+			}
+			else{
+				return false;
+			}
+		case "4":
+			skillToHit += penaltyToHitHead;
+			if(rollThreeSixSidedDice <= skillToHit){
+				return true;
+			}
+			else{
+				return false;
+			}
+		default:
+			skillToHit += penaltyToHitTorso;
+			if(rollThreeSixSidedDice <= skillToHit){
+				return true;
+			}
+			else{
+				return false;
+			}
+	}
 }
 
 
