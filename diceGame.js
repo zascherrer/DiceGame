@@ -57,8 +57,8 @@ function howToPlay(characterArray){
 	alert("That's probably a lot of information to read at once, so we'll try it out in practice.")
 
 	enemy = generateCharacter();	//Generating an enemy
-	enemy /= 2;						//Making the first enemy the player fights easier to deal with
-	enemy = Math.floor(enemy);		//Rounding the stats down to an even number
+	//enemy /= 2;						//Making the first enemy the player fights easier to deal with
+	//enemy = Math.floor(enemy);		//Rounding the stats down to an even number
 	enemy.push("Training_Bot");
 
 	alert("Now you'll fight your first enemy. Ready, set, go!");
@@ -71,7 +71,7 @@ function rollDie(sides){
 }
 
 function generateSecondaryStatistics(characterArray){
-	let hitPoints = (characterArray[0] + characterArray[2] + rollDie(20)); //(Strength + Health + 20-sided die)
+	let hitPoints = (characterArray[2] + rollDie(20) / 2); //(Health + 20-sided die) / 2
 	hitPoints = Math.floor(hitPoints);
 	characterArray.push(hitPoints);
 
@@ -124,11 +124,14 @@ function fight(player, enemy){
 
 	while(player[6] && enemy[6]){	//i.e. while both the player and the enemy are still alive
 		if(playerTurn){
+			alert("Player turn!");
 			playerAttack(player, enemy);
 		}
 		else{
+			alert("Enemy turn!");
 			enemyAttack(player, enemy);
 		}
+		playerTurn = !playerTurn;
 	}
 
 }
@@ -151,7 +154,7 @@ function playerAttack(player, enemy){
 function enemyAttack(player, enemy){
 	let attackLocation = randomHitLocation();
 	let typeOfAttack = rollDie(2).toString();
-	let shouldAttackHit = hitOrMiss(attackLocation, typeOfAttack, player);
+	let shouldAttackHit = hitOrMiss(attackLocation, typeOfAttack, enemy);
 	let isDefenseSuccessful;
 
 	if(shouldAttackHit){
@@ -188,13 +191,13 @@ function randomHitLocation(){
 	randomHitChanceTorso = 50;
 
 	switch(true){
-		case dieResult < randomHitChanceHead:
+		case die100Result < randomHitChanceHead:
 			return "4";
-		case dieResult >= randomHitChanceHead && dieResult < randomHitChanceLeg + randomHitChanceHead:
+		case die100Result >= randomHitChanceHead && die100Result < randomHitChanceLeg + randomHitChanceHead:
 			return "3";
-		case dieResult >= randomHitChanceLeg + randomHitChanceHead && dieResult < randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm:
+		case die100Result >= randomHitChanceLeg + randomHitChanceHead && die100Result < randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm:
 			return "2";
-		case dieResult >= randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm && dieResult < randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm + randomHitChanceTorso;
+		case die100Result >= randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm && die100Result < randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm + randomHitChanceTorso:
 			return "1";
 		default:
 			return "1";
@@ -213,7 +216,7 @@ function hitOrMiss(hitLocation, attackType, character){
 
 	let skillToHit = character[1]; //The character's dexterity -- penalties will be applied later
 
-	if(typeOfAttack == "1"){
+	if(attackType == "1"){
 		skillToHit += 2;
 	}
 	else{
@@ -223,7 +226,7 @@ function hitOrMiss(hitLocation, attackType, character){
 	switch(hitLocation){
 		case "1":
 			skillToHit += penaltyToHitTorso;
-			if(rollThreeSixSidedDice <= skillToHit){
+			if(rollThreeSixSidedDice() <= skillToHit){
 				return true;
 			}
 			else{
@@ -232,7 +235,7 @@ function hitOrMiss(hitLocation, attackType, character){
 			}
 		case "2":
 			skillToHit += penaltyToHitArm;
-			if(rollThreeSixSidedDice <= skillToHit){
+			if(rollThreeSixSidedDice() <= skillToHit){
 				return true;
 			}
 			else{
@@ -241,7 +244,7 @@ function hitOrMiss(hitLocation, attackType, character){
 			}
 		case "3":
 			skillToHit += penaltyToHitLeg;
-			if(rollThreeSixSidedDice <= skillToHit){
+			if(rollThreeSixSidedDice() <= skillToHit){
 				return true;
 			}
 			else{
@@ -250,7 +253,7 @@ function hitOrMiss(hitLocation, attackType, character){
 			}
 		case "4":
 			skillToHit += penaltyToHitHead;
-			if(rollThreeSixSidedDice <= skillToHit){
+			if(rollThreeSixSidedDice() <= skillToHit){
 				return true;
 			}
 			else{
@@ -259,7 +262,7 @@ function hitOrMiss(hitLocation, attackType, character){
 			}
 		default:
 			skillToHit += penaltyToHitTorso;
-			if(rollThreeSixSidedDice <= skillToHit){
+			if(rollThreeSixSidedDice() <= skillToHit){
 				return true;
 			}
 			else{
