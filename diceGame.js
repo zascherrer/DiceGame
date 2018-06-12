@@ -89,10 +89,10 @@ function generateCharacter(){
 	let health;
 	let speed;
 
-	strength = rollDie(6) + rollDie(6) + rollDie(6);
-	dexterity = rollDie(6) + rollDie(6) + rollDie(6);
-	health = rollDie(6) + rollDie(6) + rollDie(6);
-	speed = rollDie(6) + rollDie(6) + rollDie(6);
+	strength = rollThreeSixSidedDice();
+	dexterity = rollThreeSixSidedDice();
+	health = rollThreeSixSidedDice();
+	speed = rollThreeSixSidedDice();
 
 
 	characterStatistics.push(strength);
@@ -129,9 +129,41 @@ function fight(player, enemy){
 
 }
 
+function playerAttack(player, enemy){
+	let attackLocation = hitLocation();
+}
+
+function hitLocation(){
+	randomHitChanceHead = 10;
+	randomHitChanceLeg = 25;
+	randomHitChanceArm = 25;
+	randomHitChanceTorso = 40;
+
+	let choice = prompt("Where would you like to attack? Enter the number of your choice: \n\n 1. Torso \n 2. Arm \n 3. Leg \n 4. Head \n 5. Random")
+
+	if(choice === "5"){
+		let die100Result = rollDie(100);
+
+		switch(true){
+			case dieResult < randomHitChanceHead:
+				return "4";
+			case dieResult >= randomHitChanceHead && dieResult < randomHitChanceLeg + randomHitChanceHead:
+				return "3";
+			case dieResult >= randomHitChanceLeg + randomHitChanceHead && dieResult < randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm:
+				return "2";
+			case dieResult >= randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm && dieResult < randomHitChanceLeg + randomHitChanceHead + randomHitChanceArm + randomHitChanceTorso;
+				return "1";
+			default:
+				return "1";
+		}
+	}
 
 
+}
 
+function rollThreeSixSidedDice(){
+	return rollDie(6) + rollDie(6) + rollDie(6);
+}
 
 
 
