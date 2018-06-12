@@ -112,6 +112,23 @@ function arcadeMode(player){
 }
 
 function menu(player){
+	let choice = prompt("What would you like to play? \n\n 1. Arcade Mode \n\n 2. Fight a Friend");
+
+	switch(choice){
+		case "1":
+			arcadeMode(player);
+			break;
+		case "2":
+			fightAFriend(player);
+			break;
+		default:
+			alert("Please enter a valid number.");
+			menu(player);
+			break;
+	}
+}
+
+function fightAFriend(player){
 	
 }
 
