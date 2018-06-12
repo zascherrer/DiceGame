@@ -46,8 +46,6 @@ function characterCreation(playerName){
 }
 
 function howToPlay(characterArray){
-	//Instructions for how to play go here
-	//Use alert() for the instructions
 	let answer = prompt("Would you like to skip the tutorial? (y/n)")
 	if(answer == "y"){
 		return;
@@ -84,8 +82,6 @@ function arcadeMode(player){
 	alert("You will face 10 enemies, each one stronger than the last. Ready, set, go!");
 	do{
 		enemy = generateCharacter();		//Generating an enemy
-		//enemy /= 2;						//Making the first enemy the player fights easier to deal with
-		//enemy = Math.floor(enemy);		//Rounding the stats down to an even number
 		enemy.push("Enemy " + (victoryCounter + 1).toString());
 		enemy = modifyEnemy(enemy, enemyDifficulty);
 		enemyDifficulty += 0.1;
@@ -128,13 +124,13 @@ function menu(player){
 	}
 }
 
-function fightAFriend(playeOne){
+function fightAFriend(playerOne){
 	let didPlayerOneWin;
 	let rematch;
 
 	let playerTwoName = prompt("Welcome, player 2! What is your name?");
 	alert("Now we'll create " + playerTwoName + "'s character.");
-	let playerTwo = characterCreation();
+	let playerTwo = characterCreation(playerTwoName);
 
 	alert("What are you waiting for? Fight!");
 	do{
@@ -256,10 +252,12 @@ function fightPlayerVersusPlayer(playerOne, playerTwo){
 		playerOneTurn = !playerOneTurn;
 	}
 
-	if(player[6] === true){
+	if(playerOne[6] === true){
+		playerTwo[6] = true;
 		return true;
 	}
 	else{
+		playerOne[6] = true;
 		return false;
 	}
 }
@@ -358,49 +356,29 @@ function hitOrMiss(hitLocation, attackType, character){
 	switch(hitLocation){
 		case "1":
 			skillToHit += penaltyToHitTorso;
-			if(rollThreeSixSidedDice() <= skillToHit){
-				return true;
-			}
-			else{
-				alert(character[7] + "'s attack missed!")
-				return false;
-			}
+			return rollAgainstAttackSkill(skillToHit, character);
 		case "2":
 			skillToHit += penaltyToHitArm;
-			if(rollThreeSixSidedDice() <= skillToHit){
-				return true;
-			}
-			else{
-				alert(character[7] + "'s attack missed!")
-				return false;
-			}
+			return rollAgainstAttackSkill(skillToHit, character);
 		case "3":
 			skillToHit += penaltyToHitLeg;
-			if(rollThreeSixSidedDice() <= skillToHit){
-				return true;
-			}
-			else{
-				alert(character[7] + "'s attack missed!")
-				return false;
-			}
+			return rollAgainstAttackSkill(skillToHit, character);
 		case "4":
 			skillToHit += penaltyToHitHead;
-			if(rollThreeSixSidedDice() <= skillToHit){
-				return true;
-			}
-			else{
-				alert(character[7] + "'s attack missed!")
-				return false;
-			}
+			return rollAgainstAttackSkill(skillToHit, character);
 		default:
 			skillToHit += penaltyToHitTorso;
-			if(rollThreeSixSidedDice() <= skillToHit){
-				return true;
-			}
-			else{
-				alert(character[7] + "'s attack missed!")
-				return false;
-			}
+			return rollAgainstAttackSkill(skillToHit, character);
+	}
+}
+
+function rollAgainstAttackSkill(skillToHit, character){
+	if(rollThreeSixSidedDice() <= skillToHit){
+		return true;
+	}
+	else{
+		alert(character[7] + "'s attack missed!")
+		return false;
 	}
 }
 
@@ -480,7 +458,7 @@ function survivalCheck(character){
 	let survivalModifierFromHitPoints = character[4] % 10;
 	let survivalModifierFromHealth = character[2] - 10;
 	let survivalModifierTotal = survivalModifierFromHitPoints + survivalModifierFromHealth;
-	let survivalSkill = 12 + survivalModifierTotal;
+	let survivalSkill = 10 + survivalModifierTotal;
 
 	if(rollThreeSixSidedDice() > survivalSkill){
 		alert(character[7] + " has been defeated!")
