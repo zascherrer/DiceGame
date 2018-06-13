@@ -1,5 +1,3 @@
-//"use strict"; //because javascript
-
 startGame()
 
 function startGame(){
@@ -11,7 +9,7 @@ function startGame(){
 
 function introduction(){
 	let playerName = prompt("Welcome to Kung Fu Simulator 2018! What's your name?");
-	alert("First, we'll have you create your character. Then we'll teach you how to play. No, you shouldn't know how to play before you create your character. Ready? Here we go!");
+	alert("First, we'll have you create your character. Then we'll teach you how to play. Ready? Here we go!");
 
 	return playerName;
 }
@@ -73,10 +71,12 @@ function howToPlay(characterArray){
 	return;
 }
 
-function arcadeMode(player){
+function arcadeMode(playerUnmodified){
 	let isVictory = true;
 	let victoryCounter = 0;
 	let enemyDifficulty = 0.8;
+	let enemy = [];
+	let player = playerUnmodified;
 
 	alert("You will face 10 enemies, each one stronger than the last. Ready, set, go!");
 	do{
@@ -104,10 +104,12 @@ function arcadeMode(player){
 	}
 
 	alert("Your score was: " + getScore(victoryCounter, player));
+
+	menu(playerUnmodified);
 }
 
 function menu(player){
-	let choice = prompt("What would you like to play? \n\n 1. Arcade Mode \n 2. Fight a Friend");
+	let choice = prompt("What would you like to do? \n\n 1. Arcade Mode \n 2. Fight a Friend \n 3. Create a New Character \n 4. Display your Stats \n 5. Exit");
 
 	switch(choice){
 		case "1":
@@ -115,6 +117,15 @@ function menu(player){
 			break;
 		case "2":
 			fightAFriend(player);
+			break;
+		case "3":
+			player = characterCreation(player[7]);
+			menu(player);
+			break;
+		case "4":
+			displayCharacterStatistics(player);
+			break;
+		case "5":
 			break;
 		default:
 			alert("Please enter a valid number.");
@@ -151,6 +162,8 @@ function fightAFriend(playerOne){
 		}
 	}
 	while(rematch);
+
+	menu(playerOne);
 }
 
 function rollDie(sides){						//The dice used in this game are 2-sided, 4-sided, 6-sided, 8-sided, 20-sided and 100-sided
@@ -225,6 +238,7 @@ function fight(player, enemy){
 		return true;
 	}
 	else{
+		player[6] = true;
 		return false;
 	}
 }
@@ -449,7 +463,7 @@ function applyDamage(attacker, defender, attackType, hitLocation){
 		defender = survivalCheck(defender);		//The isAlive boolean
 	}
 	else{
-		alert(attacker[7] + " didn't hit hard enough to do damage...");
+		alert(attacker[7] + " didn't hit hard enough to deal damage...");
 	}								
 	
 
@@ -457,7 +471,8 @@ function applyDamage(attacker, defender, attackType, hitLocation){
 }
 
 function survivalCheck(character){
-	let survivalModifierFromHitPoints = character[4] % 10;
+	let survivalModifierFromHitPoints = character[4] / 10;
+	survivalModifierFromHitPoints = Math.round(survivalModifierFromHitPoints);
 	let survivalModifierFromHealth = character[2] - 10;
 	let survivalModifierTotal = survivalModifierFromHitPoints + survivalModifierFromHealth;
 	let survivalSkill = 10 + survivalModifierTotal;
@@ -532,4 +547,15 @@ function getScore(victoryCounter, player){
 	score = Math.round(score);
 
 	return score;
+}
+
+function displayCharacterStatistics(character){
+	let strength = character[0];
+	let dexterity = character[1];
+	let health = character[2];
+	let speed = character[3];
+
+	alert("Your character's stats are: \n\nStrength: " + strength + "\nDexterity: " + dexterity + "\nHealth: " + health + "\nSpeed: " + speed)
+	
+	menu(character);
 }
