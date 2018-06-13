@@ -344,7 +344,7 @@ function hitOrMiss(hitLocation, attackType, character){
 	let penaltyToHitLeg = -2;
 	let penaltyToHitHead = -5;
 
-	let skillToHit = character[1]; //The character's dexterity -- penalties will be applied later
+	let skillToHit = character[1] + rollDie(4); //The character's dexterity + 4-sided die -- penalties will be applied later
 
 	if(attackType == "1"){
 		skillToHit += 2;
@@ -530,6 +530,7 @@ function getScore(victoryCounter, player){
 	let statisticsPointPenalty = player[0] + player[1] + player[2] + player[3];		//The sum of the player's Strength, Dexterity, Health and Speed
 
 	let score = victoryPoints / statisticsPointPenalty;
+	score = Math.round(score);
 
 	return score;
 }
