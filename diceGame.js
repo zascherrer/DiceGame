@@ -104,7 +104,7 @@ function arcadeMode(player){
 		alert("You win!!!");
 	}
 
-	alert("Your score was: " + victoryCounter);
+	alert("Your score was: " + getScore(victoryCounter, player));
 }
 
 function menu(player){
@@ -154,7 +154,7 @@ function fightAFriend(playerOne){
 	while(rematch);
 }
 
-function rollDie(sides){
+function rollDie(sides){						//The dice used in this game are 2-sided, 4-sided, 6-sided, 8-sided, 20-sided and 100-sided
 	return Math.ceil(Math.random() * sides);
 }
 
@@ -163,7 +163,7 @@ function generateSecondaryStatistics(characterArray){
 	hitPoints = Math.floor(hitPoints);
 	characterArray.push(hitPoints);
 
-	let dodge = (characterArray[2] + characterArray[3]) / 3; //(Health + Speed) / 3
+	let dodge = (characterArray[2] + characterArray[3] + rollDie(4)) / 3; //(Health + Speed + 4-sided die) / 3
 	dodge = Math.floor(dodge);
 	characterArray.push(dodge);
 
@@ -523,5 +523,14 @@ function getEnemyName(enemyNumber){
 		case 10:
 			return "John Kaminski";
 	}
+}
+
+function getScore(victoryCounter, player){
+	let victoryPoints = victoryCounter * 1000;
+	let statisticsPointPenalty = player[0] + player[1] + player[2] + player[3];		//The sum of the player's Strength, Dexterity, Health and Speed
+
+	let score = victoryPoints / statisticsPointPenalty;
+
+	return score;
 }
 
