@@ -533,12 +533,3 @@ function getScore(victoryCounter, player){
 
 	return score;
 }
-
-function setBackground(backgroundImageToSet) {
-    document.body.style.backgroundColor = "#f3f3f3";
-    document.body.style.backgroundImage = "url('"+ backgroundImageToSet +"')";
-}
-
-// function buttonFunction(){
-//      document.getElementById("buttonAppear").innerHTML = '<button onclick="secondFunction()">It worked!</button>';
-// }
