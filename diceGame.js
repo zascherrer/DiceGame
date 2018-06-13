@@ -2,9 +2,10 @@ startGame()
 
 function startGame(){
 	let playerName = introduction();
-	let playerCharacter = characterCreation(playerName);
+	let playerUnmodified = characterCreation(playerName);
+	let playerCharacter = playerUnmodified;
 	howToPlay(playerCharacter);
-	menu(playerCharacter);
+	menu(playerCharacter, playerUnmodified);
 }
 
 function introduction(){
@@ -71,12 +72,11 @@ function howToPlay(characterArray){
 	return;
 }
 
-function arcadeMode(playerUnmodified){
+function arcadeMode(player, playerUnmodified){
 	let isVictory = true;
 	let victoryCounter = 0;
 	let enemyDifficulty = 0.8;
 	let enemy = [];
-	let player = playerUnmodified;
 
 	alert("You will face 10 enemies, each one stronger than the last. Ready, set, go!");
 	do{
@@ -96,6 +96,8 @@ function arcadeMode(playerUnmodified){
 		else{
 			alert("Game Over");
 		}
+
+		player = playerUnmodified;
 	}
 	while(isVictory && victoryCounter < 10);
 
@@ -105,31 +107,32 @@ function arcadeMode(playerUnmodified){
 
 	alert("Your score was: " + getScore(victoryCounter, player));
 
-	menu(playerUnmodified);
+	menu(player, playerUnmodified);
 }
 
-function menu(player){
+function menu(player, playerUnmodified){
 	let choice = prompt("What would you like to do? \n\n 1. Arcade Mode \n 2. Fight a Friend \n 3. Create a New Character \n 4. Display your Stats \n 5. Exit");
 
 	switch(choice){
 		case "1":
-			arcadeMode(player);
+			arcadeMode(player, playerUnmodified);
 			break;
 		case "2":
 			fightAFriend(player);
 			break;
 		case "3":
-			player = characterCreation(player[7]);
-			menu(player);
+			playerUnmodified = characterCreation(player[7]);
+			player = playerUnmodified;
+			menu(player, playerUnmodified);
 			break;
 		case "4":
-			displayCharacterStatistics(player);
+			displayCharacterStatistics(player, playerUnmodified);
 			break;
 		case "5":
 			break;
 		default:
 			alert("Please enter a valid number.");
-			menu(player);
+			menu(player, playerUnmodified);
 			break;
 	}
 }
@@ -549,7 +552,7 @@ function getScore(victoryCounter, player){
 	return score;
 }
 
-function displayCharacterStatistics(character){
+function displayCharacterStatistics(character, characterUnmodified){
 	let strength = character[0];
 	let dexterity = character[1];
 	let health = character[2];
@@ -557,5 +560,5 @@ function displayCharacterStatistics(character){
 
 	alert("Your character's stats are: \n\nStrength: " + strength + "\nDexterity: " + dexterity + "\nHealth: " + health + "\nSpeed: " + speed)
 	
-	menu(character);
+	menu(character, characterUnmodified);
 }
